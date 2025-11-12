@@ -32,7 +32,7 @@ return [
 4. Применить миграции:
 php yii migrate
 
-5. Настроить SMSPilot в config/params.php:
+5. Настроить SMSPilot в config/params_local.php:
 return [
     'smsPilotApikey' => 'YOUR_API_KEY',
     'smsPilotSender' => 'INFORM',
