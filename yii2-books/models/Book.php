@@ -9,14 +9,22 @@ use app\models\Subscription;
 use yii\db\Expression;
 
 /**
- * @property int $id
- * @property string $title
- * @property int $published_year
+ * Модель книги.
+ *
+ * Таблица: {{%book}}
+ *
+ * @property int         $id
+ * @property string      $title
+ * @property int         $published_year
  * @property string|null $description
  * @property string|null $isbn
  * @property string|null $cover_path
  *
- * @property Author[] $authors
+ * Отношения:
+ * @property Author[]    $authors
+ *
+ * Вспомогательные:
+ * @property int[]       $author_ids ID авторов, передаваемые из формы
  */
 class Book extends ActiveRecord
 {
@@ -28,6 +36,9 @@ class Book extends ActiveRecord
         return '{{%book}}';
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -40,6 +51,9 @@ class Book extends ActiveRecord
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function attributeLabels()
     {
         return [
@@ -52,24 +66,38 @@ class Book extends ActiveRecord
         ];
     }
 
+    /**
+     * Связь: многие-ко-многим с авторами через таблицу {{%book_author}}.
+     *
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
     public function getAuthors()
     {
         return $this->hasMany(Author::class, ['id' => 'author_id'])
             ->viaTable('{{%book_author}}', ['book_id' => 'id']);
     }
 
+    /**
+     * Публичный URL/путь к обложке (если не задано — пустая строка).
+     *
+     * @return string
+     */
     public function getCoverUrl(): string
     {
         return (string)($this->cover_path ?? '');
     }
 
     /**
-     * Синхронизация авторов (Через связи) + уведомления подписчиков
+     * После сохранения:
+     *  - синхронизирует связи «книга—авторы» по $author_ids;
+     *  - при создании книги отправляет SMS подписчикам соответствующих авторов.
      *
-     * @param $insert
-     * @param $changedAttributes
-     * @return void
+     * @param bool  $insert             true, если новая запись
+     * @param array $changedAttributes  изменённые атрибуты
+     *
      * @throws \yii\db\Exception
+     * @return void
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -121,8 +149,8 @@ class Book extends ActiveRecord
 
                 $msg = sprintf(
                     'Новая книга: %s (%s). Автор(ы): %s.',
-                    (string)$this->title,
-                    (string)$this->published_year,
+                    $this->title,
+                    $this->published_year,
                     implode(', ', $authorsNames)
                 );
 

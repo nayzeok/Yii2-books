@@ -7,12 +7,28 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\models\Subscription;
 use app\models\Author;
+use yii\web\Response;
 
+/**
+ * Контроллер для оформления подписки на автора.
+ *
+ * Позволяет гостю подписаться на SMS-уведомления о новых книгах автора.
+ */
 class SubscriptionController extends Controller
 {
+    /** @var string Основной layout для страниц подписки */
     public $layout = 'main';
 
-    public function actionCreate(int $id, string $name)
+    /**
+     * Создание подписки на автора.
+     *
+     * @param int $id ID автора
+     * @param string $name Имя автора (используется в URL)
+     *
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException Если автор не найден
+     */
+    public function actionCreate(int $id, string $name): string|Response
     {
         $author = Author::findOne($id);
         if (!$author) {

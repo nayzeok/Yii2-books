@@ -25,8 +25,10 @@ class AuthorSearch extends Author
 
         $this->load($params);
         if (!$this->validate()) {
-            $query->andFilterWhere(['like', 'full_name', $this->fu]);
+            return $dp; // если фильтр невалиден — возвращаем без условий
         }
+
+        $query->andFilterWhere(['like', 'full_name', $this->full_name]);
 
         return $dp;
     }

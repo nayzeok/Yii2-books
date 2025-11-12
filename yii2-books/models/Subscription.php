@@ -7,21 +7,30 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * @property int         $id
- * @property int         $author_id
- * @property string      $phone
- * @property string|null $subscriber_name
- * @property int         $created_at
+ * Подписка на автора для SMS-уведомлений.
  *
- * @property Author      $author
+ * Таблица: {{%subscription}}
+ *
+ * @property int    $id
+ * @property int    $author_id
+ * @property string $phone
+ *
+ * Отношения:
+ * @property Author $author
  */
 class Subscription extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName(): string
     {
         return '{{%subscription}}';
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -36,6 +45,9 @@ class Subscription extends ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels(): array
     {
         return [
@@ -47,6 +59,11 @@ class Subscription extends ActiveRecord
         ];
     }
 
+    /**
+     * Связь: подписка → автор.
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getAuthor(): ActiveQuery
     {
         return $this->hasOne(Author::class, ['id' => 'author_id']);

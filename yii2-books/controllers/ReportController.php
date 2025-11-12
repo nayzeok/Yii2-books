@@ -9,6 +9,12 @@ use yii\web\Controller;
 
 class ReportController extends Controller
 {
+    /**
+     * Топ-10 авторов по количеству книг за указанный год.
+     *
+     * @param int|null $year Год (по умолчанию текущий)
+     * @return string
+     */
     public function actionTopAuthors(?int $year = null): string
     {
         $year = $year ?? (int)date('Y');

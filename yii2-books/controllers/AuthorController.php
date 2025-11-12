@@ -10,10 +10,14 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class AuthorController extends Controller
 {
-    public function behaviors()
+    /**
+     * @return array[]
+     */
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -41,7 +45,10 @@ class AuthorController extends Controller
         ];
     }
 
-    public function actionIndex()
+    /**
+     * @return string
+     */
+    public function actionIndex(): string
     {
         $searchModel = new AuthorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -52,7 +59,12 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function actionView(int $id)
+    /**
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionView(int $id): string
     {
         $model = $this->findModel($id);
         $subscription = new Subscription(['author_id' => $id]);
@@ -62,7 +74,11 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    /**
+     * @return string|\yii\web\Response
+     * @throws \yii\db\Exception
+     */
+    public function actionCreate(): string|Response
     {
         $model = new Author();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -73,7 +89,12 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function actionUpdate(int $id)
+    /**
+     * @param int $id
+     * @return string|\yii\web\Response
+     * @throws \yii\db\Exception
+     */
+    public function actionUpdate(int $id): string|Response
     {
         $model = Author::findOne($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -84,14 +105,26 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function actionDelete(int $id)
+    /**
+     * @param int $id
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDelete(int $id): Response
     {
         $model = Author::findOne($id)
             ->delete();
         return $this->redirect(['index']);
     }
 
-    public function actionSubscribe(int $id)
+    /**
+     * @param int $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionSubscribe(int $id): Response
     {
         $author = $this->findModel($id);
         $model = new Subscription(['author_id' => $author->id]);
@@ -105,7 +138,12 @@ class AuthorController extends Controller
         return $this->redirect(['view', 'id' => $author->id]);
     }
 
-    protected function findModel(int $id)
+    /**
+     * @param int $id
+     * @return Author|null
+     * @throws NotFoundHttpException
+     */
+    protected function findModel(int $id): Author
     {
         if (($model = Author::findOne($id)) !== null) {
             return $model;

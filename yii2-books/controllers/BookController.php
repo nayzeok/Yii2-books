@@ -46,7 +46,7 @@ class BookController extends Controller
     /**
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new BookSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -68,6 +68,10 @@ class BookController extends Controller
         ]);
     }
 
+    /**
+     * @return Response|string
+     * @throws \yii\db\Exception
+     */
     public function actionCreate(): Response|string
     {
         $model = new Book();
@@ -97,6 +101,13 @@ class BookController extends Controller
         ]);
     }
 
+    /**
+     * @param int $id
+     * @return Response|string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     */
     public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
@@ -127,12 +138,24 @@ class BookController extends Controller
         ]);
     }
 
+    /**
+     * @param int $id
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDelete(int $id): Response
     {
         $this->findModel($id)->delete();
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param int $id
+     * @return Book
+     * @throws NotFoundHttpException
+     */
     protected function findModel(int $id): Book
     {
         if (($model = Book::findOne($id)) !== null) {
