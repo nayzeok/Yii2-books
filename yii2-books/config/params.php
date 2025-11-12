@@ -4,6 +4,6 @@ return [
     'adminEmail' => 'admin@example.com',
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
-    'smsPilotApikey' => 'XXXXXXXXXXXXYYYYYYYYYYYYZZZZZZZZXXXXXXXXXXXXYYYYYYYYYYYYZZZZZZZZ',
-    'smsPilotSender' => 'INFORM',
+    'smsPilotApikey' => null,
+    'smsPilotSender' => null,
 ];

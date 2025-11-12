@@ -5,8 +5,8 @@ use yii\base\Component;
 
 class SmsPilot extends Component
 {
-    public ?string $apiKey  = null;
-    public ?string $sender  = null;
+    public string $apiKey;
+    public string $sender;
     public string  $apiUrl  = 'https://smspilot.ru/api.php';
     public bool    $enabled = false;
 

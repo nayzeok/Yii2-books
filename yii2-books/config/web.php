@@ -3,6 +3,10 @@
 use app\components\SmsPilot;
 
 $params = require __DIR__ . '/params.php';
+if (file_exists(__DIR__ . '/params_local.php')) {
+    $localParams = require __DIR__ . '/params_local.php';
+    $params = array_merge($params, $localParams);
+}
 $db = require __DIR__ . '/db.php';
 
 $config = [
