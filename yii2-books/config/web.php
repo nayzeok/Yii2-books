@@ -1,5 +1,7 @@
 <?php
 
+use app\components\SmsPilot;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -9,7 +11,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -42,14 +44,19 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        'smsPilot' => [
+            'class'   => SmsPilot::class,
+            'apiKey'  => $params['smsPilotApikey'], // ваш ключ
+            'sender'  => $params['smsPilotSender'], // можно null
+            'apiUrl'  => 'https://smspilot.ru/api.php',
+            'enabled' => true,
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
@@ -60,7 +67,7 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';

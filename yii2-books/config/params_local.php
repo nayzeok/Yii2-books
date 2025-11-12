@@ -1,0 +1,6 @@
+<?php
+
+return [
+    'smsPilotApikey' => '11G17ZZ1ROG871RDS9VTJ32T1BCAYIFV7X0099RSFBD8AK4V7TTFBK1PYDC93I1V',
+    'smsPilotSender' => 'INFORM',
+];
